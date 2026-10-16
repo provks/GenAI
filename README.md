@@ -7,7 +7,22 @@ From Python fundamentals to building your own Retrieval-Augmented Generation (RA
 
 ---
 
-## Course Overview
+## Full Program Roadmap
+
+The complete program runs across six units, moving from foundations to a live capstone.
+
+| Unit | Focus | Key topics | Milestone |
+|------|-------|-----------|-----------|
+| 1 | **Python, FastAPI & LangChain Foundations** | Python and the "AI writes, human reviews" workflow · LangChain and LCEL basics · FastAPI with async/await · Simple UIs (Streamlit, Gradio, HTML/JS) and CORS | Working API with a UI shell |
+| 2 | **Advanced LangChain, Prompting & Memory** | Tokens and cost tracking · Few-shot prompts and JSON outputs · Routing and guardrails (`RunnableBranch`) · Conversation memory | **Chatbot** |
+| 3 | **RAG & Vector Stores** | PDF ingestion and chunking · Embeddings and ChromaDB · Advanced retrieval (multi-query, re-ranking) · RAG evaluation (LLM-as-a-judge) | **Persona Bot** (GitaGPT or Elon-style) and **NotebookLM Clone** |
+| 4 | **Agentic AI, Tool Calling & MCP** | LangGraph state machines · Custom tools and external APIs · Model Context Protocol (MCP) · ReAct loops and human-in-the-loop approval | **Intelligent IDE Backend** (Cursor-style) |
+| 5 | **Fine-Tuning, Alignment & LLMOps** | LoRA/QLoRA on small local models · DPO vs. RLHF · Tracing with LangSmith · Docker and cloud deployment | Locally fine-tuned model |
+| 6 | **Capstone Hackathon** | Graph memory and prompt versioning · Architecture, testing and hardening · Live demo with observability metrics | **Final Agentic Product Showcase** |
+
+---
+
+## Course Overview (Mid-Sem)
 
 | Unit | Topic | You pass this unit when you can… |
 |------|-------|----------------------------------|
