@@ -53,12 +53,20 @@ pip install -r requirements.txt   # install from the list
 
 ### 🎥 YouTube crash courses
 
-<!-- RESOURCES_PENDING_DAY1 -->
+**English:**
+- [Python Tutorial for Beginners 4: Lists, Tuples, and Sets](https://www.youtube.com/watch?v=W8KRzm-HUcc) — Corey Schafer (~29 min)
+- [Python Tutorial: VENV — How to Use Virtual Environments](https://www.youtube.com/watch?v=APOPm01BVrk) — Corey Schafer (~17 min)
+
+**Hindi:**
+- [Lecture 3: List & Tuple in Python | Python Full Course](https://www.youtube.com/watch?v=qVyvmzFxF_o) — Apna College (~41 min)
+- [Lecture 4: Dictionary & Set in Python | Python Full Course](https://www.youtube.com/watch?v=078tYSD7K8E) — Apna College (~54 min)
+- [Virtual Environment & Requirements.txt | Python Tutorials For Absolute Beginners #43](https://www.youtube.com/watch?v=Lah7WGW6exg) — CodeWithHarry (~21 min)
 
 ### 💻 GitHub reference projects
 
-<!-- RESOURCES_PENDING_DAY1 -->
+- [trekhleb/learn-python](https://github.com/trekhleb/learn-python) — a large, well-organized collection of annotated Python scripts (with tests) covering lists, tuples, dicts and more — great for practicing.
+- [navdeep-G/samplemod](https://github.com/navdeep-G/samplemod) — a minimal example of a real Python project layout, including a proper `requirements.txt`.
 
 ### 🎓 Free certification
 
-<!-- RESOURCES_PENDING_DAY1 -->
+- [Python for Beginners — Free Course with Certification (Simplilearn SkillUp)](https://www.simplilearn.com/learn-python-basics-free-course-skillup) — completely free, 11 hours self-paced, includes a certificate of completion.
