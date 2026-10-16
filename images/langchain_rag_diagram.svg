@@ -1,0 +1,125 @@
+<svg viewBox="0 0 1150 1330" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1150" height="1330" fill="#ffffff"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="575" y="32" text-anchor="middle" font-size="24" font-weight="bold" fill="#0f172a">LangChain + RAG — How All the Pieces Fit Together</text>
+
+  <!-- Legend -->
+  <g font-size="11.5" fill="#1e293b">
+    <rect x="60" y="48" width="14" height="14" fill="#dbeafe" stroke="#1d4ed8"/><text x="79" y="59">Document Loader</text>
+    <rect x="220" y="48" width="14" height="14" fill="#ccfbf1" stroke="#0f766e"/><text x="239" y="59">Text Splitter</text>
+    <rect x="360" y="48" width="14" height="14" fill="#ede9fe" stroke="#6d28d9"/><text x="379" y="59">Embeddings</text>
+    <rect x="490" y="48" width="14" height="14" fill="#ffedd5" stroke="#c2410c"/><text x="509" y="59">Vector Store</text>
+    <rect x="630" y="48" width="14" height="14" fill="#dcfce7" stroke="#15803d"/><text x="649" y="59">Retriever</text>
+    <rect x="760" y="48" width="14" height="14" fill="#fce7f3" stroke="#be185d"/><text x="779" y="59">Prompt Template</text>
+    <rect x="920" y="48" width="14" height="14" fill="#fee2e2" stroke="#b91c1c"/><text x="939" y="59">Model (LLM)</text>
+    <rect x="1040" y="48" width="14" height="14" fill="#e2e8f0" stroke="#334155"/><text x="1059" y="59">Output Parser</text>
+  </g>
+
+  <!-- Phase labels -->
+  <text x="235" y="100" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">PHASE 1</text>
+  <text x="235" y="118" text-anchor="middle" font-size="12.5" fill="#475569">Build the knowledge base (once)</text>
+  <text x="935" y="100" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">PHASE 2</text>
+  <text x="935" y="118" text-anchor="middle" font-size="12.5" fill="#475569">Answer a question (every time)</text>
+
+  <!-- LEFT COLUMN -->
+  <!-- Document -->
+  <rect x="60" y="140" width="350" height="80" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.5"/>
+  <text x="235" y="172" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Your Document</text>
+  <text x="235" y="194" text-anchor="middle" font-size="12.5" fill="#334155">(PDF, notes, article...)</text>
+  <line x1="235" y1="220" x2="235" y2="250" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Document Loader -->
+  <rect x="60" y="250" width="350" height="90" rx="10" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="235" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Document Loader</text>
+  <text x="235" y="308" text-anchor="middle" font-size="12.5" fill="#1e3a8a">(opens the file, pulls out the text)</text>
+  <line x1="235" y1="340" x2="235" y2="370" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Text Splitter -->
+  <rect x="60" y="370" width="350" height="90" rx="10" fill="#ccfbf1" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="235" y="405" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Text Splitter</text>
+  <text x="235" y="428" text-anchor="middle" font-size="12.5" fill="#134e4a">(cuts long text into small chunks)</text>
+  <line x1="235" y1="460" x2="235" y2="490" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Embeddings (left) -->
+  <rect x="60" y="490" width="350" height="90" rx="10" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.5"/>
+  <text x="235" y="525" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Embeddings</text>
+  <text x="235" y="548" text-anchor="middle" font-size="12.5" fill="#4c1d95">(text → numbers that capture meaning)</text>
+  <line x1="235" y1="580" x2="235" y2="610" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Vector Store -->
+  <rect x="60" y="610" width="350" height="90" rx="10" fill="#ffedd5" stroke="#c2410c" stroke-width="1.5"/>
+  <text x="235" y="645" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Vector Store — Chroma</text>
+  <text x="235" y="668" text-anchor="middle" font-size="12.5" fill="#7c2d12">(a searchable database of those numbers)</text>
+
+  <!-- RIGHT COLUMN -->
+  <!-- Your Question -->
+  <rect x="760" y="250" width="350" height="90" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.5"/>
+  <text x="935" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Your Question</text>
+  <text x="935" y="308" text-anchor="middle" font-size="12.5" fill="#334155">(whatever the student types)</text>
+  <line x1="935" y1="340" x2="935" y2="490" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Embeddings (right) -->
+  <rect x="760" y="490" width="350" height="90" rx="10" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.5"/>
+  <text x="935" y="525" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Embeddings</text>
+  <text x="935" y="548" text-anchor="middle" font-size="12.5" fill="#4c1d95">(question → numbers, same method as above)</text>
+  <line x1="935" y1="580" x2="935" y2="610" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Retriever -->
+  <rect x="760" y="610" width="350" height="90" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+  <text x="935" y="645" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Retriever</text>
+  <text x="935" y="668" text-anchor="middle" font-size="12.5" fill="#14532d">(finds the most similar chunks)</text>
+
+  <!-- Horizontal connector: Vector Store <-> Retriever -->
+  <text x="585" y="648" text-anchor="middle" font-size="12" font-style="italic" fill="#475569">searches ⇄ returns top matches</text>
+  <line x1="410" y1="655" x2="755" y2="655" stroke="#475569" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
+
+  <!-- Question bypass elbow to merge box -->
+  <path d="M1110,295 L1130,295 L1130,805 L835,805" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+  <text x="1138" y="550" font-size="11" fill="#64748b" transform="rotate(90 1138,550)" text-anchor="middle">question text (unchanged)</text>
+
+  <!-- Retriever down to merge -->
+  <path d="M935,700 L935,735 L825,760" fill="none" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Phase 3 label -->
+  <text x="580" y="730" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">PHASE 3</text>
+  <text x="580" y="748" text-anchor="middle" font-size="12.5" fill="#475569">Generate the final answer</text>
+
+  <!-- Merge box -->
+  <rect x="330" y="760" width="500" height="90" rx="10" fill="#f8fafc" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="580" y="795" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Relevant Chunks + Your Question</text>
+  <text x="580" y="818" text-anchor="middle" font-size="12.5" fill="#334155">(both get inserted into the prompt template)</text>
+  <line x1="580" y1="850" x2="580" y2="880" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Prompt Template -->
+  <rect x="330" y="880" width="500" height="80" rx="10" fill="#fce7f3" stroke="#be185d" stroke-width="1.5"/>
+  <text x="580" y="913" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Prompt Template</text>
+  <text x="580" y="935" text-anchor="middle" font-size="12.5" fill="#831843">(fills blanks: context = chunks, question = yours)</text>
+  <line x1="580" y1="960" x2="580" y2="990" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Model -->
+  <rect x="330" y="990" width="500" height="80" rx="10" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/>
+  <text x="580" y="1023" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Model (LLM)</text>
+  <text x="580" y="1045" text-anchor="middle" font-size="12.5" fill="#7f1d1d">(the AI reads the prompt and writes an answer)</text>
+  <line x1="580" y1="1070" x2="580" y2="1100" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Output Parser -->
+  <rect x="330" y="1100" width="500" height="80" rx="10" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+  <text x="580" y="1133" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Output Parser</text>
+  <text x="580" y="1155" text-anchor="middle" font-size="12.5" fill="#1e293b">(cleans the AI's raw reply into plain text)</text>
+  <line x1="580" y1="1180" x2="580" y2="1210" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Final Answer -->
+  <rect x="330" y="1210" width="500" height="70" rx="10" fill="#bbf7d0" stroke="#15803d" stroke-width="2"/>
+  <text x="580" y="1242" text-anchor="middle" font-size="17" font-weight="bold" fill="#14532d">✅ Final Answer</text>
+  <text x="580" y="1263" text-anchor="middle" font-size="12.5" fill="#14532d">(grounded in your document, not just the AI's memory)</text>
+
+  <!-- Footer -->
+  <text x="575" y="1310" text-anchor="middle" font-size="13" font-style="italic" fill="#475569">Every arrow above is one step in LangChain's "|" pipe — chain them all together and you get one LCEL chain (an LCEL "RAG chain").</text>
+</svg>

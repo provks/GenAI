@@ -1,269 +1,236 @@
-# Day 2 — Prompt Engineering
+# Day 3 — LangChain & Basic RAG
 
-Quick, simple notes. The project for this day is `grounded_tutor.py` in this folder.
+Quick, simple notes. Two small projects in this folder: `chain_demo.py` / `chain_with_memory.py` (LangChain basics) and `rag/` (a full RAG app).
 
-## What You Need to Know
+## Picture: How It All Fits Together
 
-**Prompt engineering** = writing your instructions to the AI carefully, so it gives you reliable, useful answers instead of random or made-up ones.
+![LangChain + RAG diagram](images/langchain_rag_diagram.png)
 
-Five techniques:
+## Part 1 — LangChain Basics
 
-| Technique | Simple Meaning | In `grounded_tutor.py` |
-|---|---|---|
-| **1. Assign a role** | Tell the AI *who it is* before asking anything. | `"You are Grounded Tutor, a terse study assistant."` |
-| **2. Write clear instructions** | Say exactly what you want, not vaguely. | `"Reply with ONLY a single JSON object — no markdown fences, no text before or after it."` |
-| **3. Few-shot prompting** | Give the AI 1–2 *examples* of a correct answer, so it copies the pattern. | *Not used in this file* — see the mini-example below. |
-| **4. Specify output format** | Show the AI the exact shape you want the answer in. | The JSON shape with `answer`, `confidence`, and `topic` keys. |
-| **5. Handle uncertainty** | Tell the AI it's okay to say "I don't know" instead of guessing. | `"If you are not sure of the answer, say so... Never invent facts to sound confident."` |
+| Word | Simple Meaning |
+|---|---|
+| **Model** | The piece that actually talks to the AI (sends a message and gets a reply). |
+| **Prompt Template** | A reusable instruction with a blank you fill in each time, e.g., `"Explain {term}"`. |
+| **Output Parser** | Cleans up the AI's raw reply into the exact format you want (here: plain text). |
+| **Chain (LCEL, the `\|` symbol)** | Connects steps together: *do this, then feed the result into the next step.* `prompt \| model \| parser` means "fill the prompt → send to AI → clean the reply." |
+| **Memory** | Remembers earlier messages in a conversation, so the AI can understand things like "explain that again." |
 
-### Mini-Example of Few-Shot Prompting (Technique 3)
+**Why LangChain?**
 
-This technique is not used in `grounded_tutor.py`.
+Without it, you'd have to write all the code for sending messages, getting replies, and remembering the conversation yourself. LangChain gives you ready-made pieces that you can connect together.
 
-```text
-Turn this into a polite email:
+### Code Walkthrough — `chain_demo.py`
 
-Input: "send report now"
-Output: "Hi, could you please send the report when you get a chance? Thanks!"
-
-Input: "meeting moved to 3pm"
-Output:
-```
-
-Giving the AI one or more examples before your real question is called **few-shot prompting**.
-
-- **Zero-shot prompting:** No examples are provided.
-- **Few-shot prompting:** One or more examples are provided.
-
-## Code Walkthrough — `grounded_tutor.py`
-
-Line-by-line explanations of the important parts.
-
-### 1. Connect to Gemini
+#### 1. Connect to the AI Model
 
 ```python
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+llm = ChatGoogleGenerativeAI(model=..., google_api_key=...)
 ```
 
-Connects to Google's Gemini AI using your API key. The key is stored in a `.env` file or environment variable instead of being typed directly into the code.
+This is the **Model** — the connection to the AI.
 
-### 2. Select the AI Model
+#### 2. Create a Prompt Template
 
 ```python
-MODEL = os.getenv("MODEL_NAME", "gemini-2.5-flash")
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You explain confusing tech words in ONE simple sentence..."),
+    ("user", "{term}"),
+])
 ```
 
-Picks which AI model to use. If `MODEL_NAME` is not set, the code defaults to `gemini-2.5-flash`.
+This is the **Prompt Template**. `{term}` is the blank that gets filled with whatever word you type in.
 
-### 3. Create the System Prompt
+#### 3. Create an Output Parser
 
 ```python
-SYSTEM_PROMPT = """You are Grounded Tutor, a terse study assistant. ..."""
+parser = StrOutputParser()
 ```
 
-This contains the **role, instructions, output format, and uncertainty rule** in one block of text.
+This is the **Output Parser**. It means "give me the reply as plain text."
 
-This is prompt engineering in action.
-
-### 4. Send a Question to the AI
+#### 4. Connect Everything into a Chain
 
 ```python
-def ask_tutor(question: str) -> dict:
-    response = client.models.generate_content(
-        model=MODEL,
-        contents=question,
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_PROMPT
-        ),
-    )
-    raw = response.text
+explainer_chain = prompt | llm | parser
 ```
 
-This function:
+This is the **Chain**. The `|` symbol connects all three steps into one pipeline.
 
-1. Accepts a question from the user.
-2. Sends the question and system prompt to Gemini.
-3. Receives the AI's response as raw text.
+The process is:
 
-### 5. Handle Invalid JSON
+1. Fill in the prompt.
+2. Send it to the AI model.
+3. Convert the response into plain text.
+
+### `chain_with_memory.py` Adds Memory
 
 ```python
-    try:
-        data = json.loads(raw)
-    except json.JSONDecodeError:
-        logging.error("model did not return valid JSON: %r", raw)
-        return {
-            "answer": raw,
-            "confidence": "low",
-            "topic": "parse_error"
-        }
+history = []
+
+history.append(HumanMessage(content=term))
+history.append(AIMessage(content=reply))
 ```
 
-This tries to read the AI's response as JSON.
+Every question and answer gets saved in a plain Python list.
 
-If the response is not valid JSON, the code catches the error instead of crashing the program and returns a fallback response.
+For each new question, the conversation history is sent back to the AI. This helps the AI understand earlier messages and remember the conversation context.
 
-### 6. Log the Response Details
+## Part 2 — Basic RAG
+
+**RAG (Retrieval-Augmented Generation)** means retrieving relevant information from your own documents before asking the AI to answer.
+
+Instead of relying only on the AI's built-in knowledge, you first fetch relevant facts from your document and then give those facts to the AI along with the question. This helps ground the answer in the supplied information.
+
+### The Main Steps of RAG
+
+| Step | Simple Meaning |
+|---|---|
+| **Document Upload** | Give the app a file (here: a PDF). |
+| **Chunking** | Cut the long document into small pieces because the AI cannot efficiently search one giant block of text. |
+| **Embeddings** | Turn each chunk and the question into numbers that capture meaning. |
+| **Vector Database** | A searchable database of those numbers (we use Chroma, which runs locally). |
+| **Retrieval** | Search the vector database for the chunks most similar to the question. |
+| **Grounded Answering** | Answer using only the retrieved chunks. If the answer is missing, say `"not in my documents"`. |
+
+### Code Walkthrough — `rag/ingest.py`
+
+This file builds the knowledge base.
+
+#### 1. Load the PDF
 
 ```python
-    logging.info(
-        "topic=%s confidence=%s prompt_tokens=%d completion_tokens=%d",
-        data.get("topic"),
-        data.get("confidence"),
-        response.usage_metadata.prompt_token_count,
-        response.usage_metadata.candidates_token_count,
-    )
-    return data
+loader = PyPDFLoader(pdf_path)
+documents = loader.load()
 ```
 
-This records useful information for debugging and tracking, including:
+Opens the PDF and extracts its text, creating a document for each page.
 
-- The topic of the answer.
-- The confidence level.
-- The number of prompt tokens.
-- The number of completion tokens.
-
-Finally, it returns the structured answer.
-
-### 7. Save Each Interaction
+#### 2. Split the Document into Chunks
 
 ```python
-def log_interaction(question, result, path="tutor_log.jsonl"):
-    record = {"question": question, **result}
-    with open(path, "a") as f:
-        f.write(json.dumps(record) + "\n")
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=50
+)
+
+chunks = splitter.split_documents(documents)
 ```
 
-This saves each question and its answer in a log file called `tutor_log.jsonl`.
+Cuts the text into chunks of 500 characters, with a 50-character overlap between consecutive chunks.
 
-Each interaction is stored as a separate JSON object on a new line.
+The overlap helps preserve context when information crosses chunk boundaries.
 
-### 8. Run the Main Program
+#### 3. Create Embeddings and Store Them
 
 ```python
-def main():
-    print("Grounded Tutor -- ask a question ('quit' to stop)")
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001",
+    ...
+)
 
-    while True:
-        question = input("\n> ").strip()
-
-        if question.lower() in {"quit", "exit"}:
-            break
-
-        ...
+Chroma.from_documents(
+    chunks,
+    embeddings,
+    persist_directory="db"
+)
 ```
 
-The main loop repeatedly asks the user to enter a question.
+Turns every chunk into numbers and stores them in a local folder called `db`.
 
-The program continues until the user types `quit` or `exit`.
+This folder contains the searchable vector database.
 
-## Pass Criteria
+### Code Walkthrough — `rag/ask.py`
 
-By the end of Day 2, you should be able to:
+This file answers questions using the stored knowledge base.
 
-- [ ] Take a vague prompt and rewrite it into a reliable prompt.
-- [ ] Use all five prompt engineering techniques.
-- [ ] Explain the purpose of a system prompt.
-- [ ] Understand how structured JSON output works.
-- [ ] Explain why handling uncertainty is important.
-- [ ] Understand how `grounded_tutor.py` sends questions to Gemini and processes responses.
+#### 1. Load the Vector Database
 
-## Learn More
+```python
+vector_store = Chroma(
+    persist_directory="db",
+    embedding_function=embeddings
+)
 
-### 🎥 YouTube Crash Courses
+retriever = vector_store.as_retriever(
+    search_kwargs={"k": 3}
+)
+```
 
-**English**
+Reopens the saved database and creates a retriever that returns the three most relevant chunks for a question.
 
-- [Prompt Engineering Tutorial – Master ChatGPT and LLM Responses](https://www.youtube.com/watch?v=_ZvnD73m40o) — freeCodeCamp.org (approximately 1 hour)
-- [RAG vs Fine-Tuning vs Prompt Engineering: Optimizing AI Models](https://www.youtube.com/watch?v=zYGDpG-pTho) — IBM Technology (approximately 11 minutes)
-- [Master the Perfect ChatGPT Prompt Formula (in Just 8 Minutes!)](https://www.youtube.com/watch?v=jC4v5AS4RIM) — Jeff Su (approximately 8 minutes)
-- [Master Prompt Engineering in 11 Minutes](https://www.youtube.com/watch?v=zSyo6YtdLnI) — Simplilearn (approximately 11 minutes)
+#### 2. Create a Grounded Prompt
 
-**Hindi**
+```python
+prompt = ChatPromptTemplate.from_template("""
+Answer using ONLY the context below...
 
-- [ChatGPT Prompt Engineering Course for Beginners in Hindi](https://www.youtube.com/watch?v=sFD35B_fIuM) — HBA Services
+If the answer is not in the context, reply with exactly:
+"not in my documents"
+...
+""")
+```
 
-### 💻 GitHub Reference Projects
+This instruction tells the AI to answer using the supplied context rather than its general knowledge.
 
-- [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide) — A beginner-to-advanced reference covering roles, clear instructions, few-shot prompting, and output formatting.
-- [google-gemini/cookbook — JSON Mode Quickstart](https://github.com/google-gemini/cookbook/blob/main/quickstarts/JSON_mode.ipynb) — Google's example notebook for structured JSON output from Gemini.
-- [openai/openai-cookbook](https://github.com/openai/openai-cookbook) — Prompting examples and practical patterns. Many concepts apply across AI models.
+If the answer is not present, it must return the exact phrase `"not in my documents"`.
 
-### 🎓 Free Certification
+#### 3. Build the RAG Chain
 
-- [Introduction to Prompt Engineering Fundamentals — Simplilearn SkillUp](https://www.simplilearn.com/prompt-engineering-free-course-skillup) — A free course with a certificate of completion.
+```python
+rag_chain = (
+    {
+        "context": retriever | format_chunks,
+        "question": RunnablePassthrough()
+    }
+    | prompt
+    | llm
+    | parser
+)
+```
 
----
+The complete RAG process is:
 
-# Day 1 — Python Foundations
+1. Retrieve the relevant document chunks.
+2. Format the chunks as text.
+3. Fill the prompt with the context and question.
+4. Send the prompt to the AI model.
+5. Convert the AI response into plain text.
 
-Quick, simple notes. No long explanations — just what you need to know and practice.
+## How to Run the RAG Project
 
-## What You Need to Know
-
-### Lists, Tuples, and Dictionaries
-
-| Thing | What It Is | Example |
-|---|---|---|
-| **List** | An ordered group of items you can change by adding, removing, or editing them. | `fruits = ["apple", "banana", "mango"]` |
-| **Tuple** | An ordered group of items that cannot be changed after creation. | `point = (10, 20)` |
-| **Dictionary** | A group of `key: value` pairs, like a real dictionary that maps a word to its meaning. | `student = {"name": "Ravi", "age": 20}` |
-
-**When to use which:**
-
-- **List:** Use it when the data can change.
-- **Tuple:** Use it when the collection should remain unchanged, such as a pair of coordinates.
-- **Dictionary:** Use it when you want to look up values by name instead of by position.
-
-### Virtual Environment (`venv`)
-
-A **virtual environment** is a clean, separate environment for one project's Python packages. It helps prevent packages installed for one project from interfering with another project.
+Run these commands from the appropriate project directory.
 
 ```bash
-# Create a virtual environment (one-time per project)
-python -m venv venv
-
-# Activate on macOS/Linux
-source venv/bin/activate
-
-# Activate on Windows Command Prompt
-venv\Scripts\activate
-
-# Activate on Windows PowerShell
-.\venv\Scripts\Activate.ps1
-```
-
-You'll know the environment is active when your terminal prompt usually starts with `(venv)`.
-
-### `pip` — Installing Packages
-
-`pip` is Python's package installer. It downloads and installs packages created by other developers so you don't have to write everything yourself.
-
-```bash
-pip install requests
-```
-
-### `requirements.txt` — Managing Dependencies
-
-A `requirements.txt` file lists the Python packages a project needs. You can use it to recreate the project's package environment on another computer.
-
-```bash
-# Save installed packages and their versions
-pip freeze > requirements.txt
-
-# Install packages listed in the file
+# Install the required packages
 pip install -r requirements.txt
+
+# Enter the RAG folder
+cd rag
+
+# Build the knowledge base from a PDF
+python ingest.py your_file.pdf
+
+# Start asking questions
+python ask.py
 ```
+
+Replace `your_file.pdf` with the actual path or filename of your PDF.
+
+**Important:** Run the installation command from the directory containing the relevant `requirements.txt` file.
 
 ## Pass Criteria
 
-By the end of Day 1, you should be able to:
+By the end of Day 3, you should be able to:
 
-- [ ] Create and activate a clean virtual environment (`venv`).
-- [ ] Install a package using `pip`.
-- [ ] Save dependencies using `pip freeze > requirements.txt`.
-- [ ] Install dependencies using `pip install -r requirements.txt`.
-- [ ] Use lists, tuples, and dictionaries correctly without looking anything up.
+- [ ] Call an AI model through LangChain.
+- [ ] Build a `prompt | model | parser` chain.
+- [ ] Add conversation memory.
+- [ ] Explain what RAG is and why it is useful.
+- [ ] Build an app that follows this workflow: `upload document → chunk → embed → store in vector database → retrieve → answer`.
+- [ ] Explain the purpose of embeddings and a vector database.
+- [ ] Ensure answers are grounded in the document.
+- [ ] Make the AI say `"not in my documents"` when the answer is not found in the retrieved context.
 
 ## Learn More
 
@@ -271,24 +238,21 @@ By the end of Day 1, you should be able to:
 
 **English**
 
-- [Python Tutorial for Beginners 4: Lists, Tuples, and Sets](https://www.youtube.com/watch?v=W8KRzm-HUcc) — Corey Schafer (approximately 29 minutes)
-- [Python Tutorial: VENV — How to Use Virtual Environments](https://www.youtube.com/watch?v=APOPm01BVrk) — Corey Schafer (approximately 17 minutes)
+- [LangChain Crash Course for Beginners](https://www.youtube.com/watch?v=lG7Uxts9SXs) — freeCodeCamp.org
+- [LangChain Crash Course for Beginners | LangChain Tutorial](https://www.youtube.com/watch?v=nAmC7SoVLd8) — codebasics
+- [RAG + LangChain Python Project: Easy AI/Chat for Your Docs](https://www.youtube.com/watch?v=tcqEUSNCn8I) — pixegami (approximately 20–30 minutes; closely matches this project, including chunking, embeddings, Chroma, and chatting with documents)
 
 **Hindi**
 
-- [Lecture 3: List and Tuple in Python | Python Full Course](https://www.youtube.com/watch?v=qVyvmzFxF_o) — Apna College (approximately 41 minutes)
-- [Lecture 4: Dictionary and Set in Python | Python Full Course](https://www.youtube.com/watch?v=078tYSD7K8E) — Apna College (approximately 54 minutes)
-- [Virtual Environment and requirements.txt | Python Tutorials for Absolute Beginners #43](https://www.youtube.com/watch?v=Lah7WGW6exg) — CodeWithHarry (approximately 21 minutes)
+- [Generative AI Crash Course With LangChain (3 Hours)](https://www.youtube.com/watch?v=7qqGnuRrWxg) — Krish Naik Hindi
+- [Building a RAG System in LangChain | Video 15](https://www.youtube.com/watch?v=J5_-l7WIO_w) — CampusX (hands-on RAG project)
 
 ### 💻 GitHub Reference Projects
 
-- [trekhleb/learn-python](https://github.com/trekhleb/learn-python) — A collection of annotated Python examples, including lists, tuples, dictionaries, and other Python fundamentals.
-- [navdeep-G/samplemod](https://github.com/navdeep-G/samplemod) — An example Python project structure that demonstrates packaging and project organization.
+- [pixegami/langchain-rag-tutorial](https://github.com/pixegami/langchain-rag-tutorial) — A small, beginner-friendly repository for building a chat-with-your-PDF application.
+- [langchain-ai/rag-from-scratch](https://github.com/langchain-ai/rag-from-scratch) — Tutorials and notebooks from the LangChain team that build RAG step by step.
+- [krishnaik06/RAG-Tutorials](https://github.com/krishnaik06/RAG-Tutorials) — Reference projects accompanying Krish Naik's RAG tutorials.
 
 ### 🎓 Free Certification
 
-- [Python for Beginners — Simplilearn SkillUp](https://www.simplilearn.com/learn-python-basics-free-course-skillup) — A beginner-friendly Python course with a certificate of completion.
-
----
-
-**Note:** Day 2 appears before Day 1 because that was the order in your original content. You can reverse the sections if you want the file to follow the learning sequence.
+- [Free Generative AI Models Course — Simplilearn SkillUp](https://www.simplilearn.com/free-generative-ai-models-course-skillup) — A free course with a certificate of completion. It covers general Generative AI fundamentals rather than LangChain specifically.
