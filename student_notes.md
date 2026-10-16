@@ -102,12 +102,21 @@ The main loop: keeps asking you for a question until you type `quit`.
 
 ### 🎥 YouTube crash courses
 
-<!-- RESOURCES_PENDING_DAY2 -->
+**English:**
+- [Prompt Engineering Tutorial – Master ChatGPT and LLM Responses](https://www.youtube.com/watch?v=_ZvnD73m40o) — freeCodeCamp.org (~1 hr)
+- [RAG vs Fine-Tuning vs Prompt Engineering: Optimizing AI Models](https://www.youtube.com/watch?v=zYGDpG-pTho) — IBM Technology (~11 min)
+- [Master the Perfect ChatGPT Prompt Formula (in just 8 minutes)!](https://www.youtube.com/watch?v=jC4v5AS4RIM) — Jeff Su (~8 min)
+- [Master Prompt Engineering in 11 Minutes](https://www.youtube.com/watch?v=zSyo6YtdLnI) — Simplilearn (~11 min)
+
+**Hindi:**
+- [ChatGPT Prompt Engineering Course For Beginners in Hindi](https://www.youtube.com/watch?v=sFD35B_fIuM) — HBA Services (full beginner course)
 
 ### 💻 GitHub reference projects
 
-<!-- RESOURCES_PENDING_DAY2 -->
+- [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide) — the standard beginner-to-advanced reference, covering roles, clear instructions, few-shot prompting, and output formatting.
+- [google-gemini/cookbook — JSON mode quickstart](https://github.com/google-gemini/cookbook/blob/main/quickstarts/JSON_mode.ipynb) — official Google notebook showing exactly how to force structured JSON output from Gemini, directly matching `grounded_tutor.py`.
+- [openai/openai-cookbook](https://github.com/openai/openai-cookbook) — widely-used prompting pattern examples (concepts transfer even though examples use OpenAI).
 
 ### 🎓 Free certification
 
-<!-- RESOURCES_PENDING_DAY2 -->
+- [Introduction to Prompt Engineering Fundamentals (Simplilearn SkillUp)](https://www.simplilearn.com/prompt-engineering-free-course-skillup) — completely free, includes a certificate of completion.
