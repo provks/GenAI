@@ -12,7 +12,7 @@ From Python fundamentals to building your own Retrieval-Augmented Generation (RA
 | Unit | Topic | You pass this unit when you can… |
 |------|-------|----------------------------------|
 | 1 | **Python**: list, tuple, dict, virtual environment, pip | Set up a clean `venv`, `pip install` and freeze a `requirements.txt`, and use lists/tuples/dicts correctly without looking it up |
-| 2 | **Prompt Engineering** | Take a vague prompt and make it reliable: role, clear instruction, examples, output format, and "say *I don't know*" |
+| 2 | **Prompt Engineering** | Take a vague prompt and make it reliable: role, clear instruction, examples, output format, and structured format (JSON etc.) |
 | 3 | **LangChain**: models, components, document loader, text splitter, embeddings, retrievers, vector store (chromaDB), memory | Call a model through LangChain, build a `prompt \| model \| parser` chain, and add conversation memory |
 | 4 | **Basic RAG** | Build an app that: uploads a doc → chunks → embeds → stores in a vector DB → retrieves → answers **grounded in the doc, and says "not in my documents" when it isn't** |
 
