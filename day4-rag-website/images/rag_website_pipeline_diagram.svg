@@ -1,0 +1,135 @@
+<svg viewBox="0 0 1150 1590" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1150" height="1590" fill="#ffffff"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="575" y="32" text-anchor="middle" font-size="23" font-weight="bold" fill="#0f172a">Today's Full Pipeline — Document Loader to Website Output</text>
+
+  <!-- Legend row 1 -->
+  <g font-size="11.5" fill="#1e293b">
+    <rect x="60" y="48" width="14" height="14" fill="#dbeafe" stroke="#1d4ed8"/><text x="79" y="59">Document Loader</text>
+    <rect x="235" y="48" width="14" height="14" fill="#ccfbf1" stroke="#0f766e"/><text x="254" y="59">Text Splitter</text>
+    <rect x="410" y="48" width="14" height="14" fill="#ede9fe" stroke="#6d28d9"/><text x="429" y="59">Embeddings</text>
+    <rect x="585" y="48" width="14" height="14" fill="#ffedd5" stroke="#c2410c"/><text x="604" y="59">Vector Store</text>
+    <rect x="760" y="48" width="14" height="14" fill="#dcfce7" stroke="#15803d"/><text x="779" y="59">Retriever</text>
+    <rect x="935" y="48" width="14" height="14" fill="#fef9c3" stroke="#a16207"/><text x="954" y="59">Memory</text>
+  </g>
+  <!-- Legend row 2 -->
+  <g font-size="11.5" fill="#1e293b">
+    <rect x="60" y="72" width="14" height="14" fill="#fce7f3" stroke="#be185d"/><text x="79" y="83">Prompt Template</text>
+    <rect x="270" y="72" width="14" height="14" fill="#fee2e2" stroke="#b91c1c"/><text x="289" y="83">Model (LLM)</text>
+    <rect x="480" y="72" width="14" height="14" fill="#e2e8f0" stroke="#334155"/><text x="499" y="83">Output Parser</text>
+    <rect x="690" y="72" width="14" height="14" fill="#cffafe" stroke="#0e7490"/><text x="709" y="83">FastAPI Server</text>
+    <rect x="900" y="72" width="14" height="14" fill="#bbf7d0" stroke="#15803d"/><text x="919" y="83">Website</text>
+  </g>
+
+  <!-- Phase labels -->
+  <text x="235" y="118" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">PHASE 1</text>
+  <text x="235" y="136" text-anchor="middle" font-size="12.5" fill="#475569">Build the knowledge base (once)</text>
+  <text x="935" y="118" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">PHASE 2</text>
+  <text x="935" y="136" text-anchor="middle" font-size="12.5" fill="#475569">Process the question (every time)</text>
+
+  <!-- LEFT COLUMN -->
+  <rect x="60" y="160" width="350" height="80" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.5"/>
+  <text x="235" y="192" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Your Document</text>
+  <text x="235" y="214" text-anchor="middle" font-size="12.5" fill="#334155">(PDF, notes, article...)</text>
+  <line x1="235" y1="240" x2="235" y2="270" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="270" width="350" height="90" rx="10" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="235" y="305" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Document Loader</text>
+  <text x="235" y="328" text-anchor="middle" font-size="12.5" fill="#1e3a8a">(opens the file, pulls out the text)</text>
+  <line x1="235" y1="360" x2="235" y2="390" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="390" width="350" height="90" rx="10" fill="#ccfbf1" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="235" y="425" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Text Splitter</text>
+  <text x="235" y="448" text-anchor="middle" font-size="12.5" fill="#134e4a">(cuts long text into small chunks)</text>
+  <line x1="235" y1="480" x2="235" y2="510" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="510" width="350" height="90" rx="10" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.5"/>
+  <text x="235" y="545" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Embeddings</text>
+  <text x="235" y="568" text-anchor="middle" font-size="12.5" fill="#4c1d95">(text → numbers that capture meaning)</text>
+  <line x1="235" y1="600" x2="235" y2="630" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="630" width="350" height="90" rx="10" fill="#ffedd5" stroke="#c2410c" stroke-width="1.5"/>
+  <text x="235" y="665" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Vector Store — Chroma</text>
+  <text x="235" y="688" text-anchor="middle" font-size="12.5" fill="#7c2d12">(a searchable database of those numbers)</text>
+
+  <!-- RIGHT COLUMN -->
+  <rect x="760" y="270" width="350" height="90" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.5"/>
+  <text x="935" y="305" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Your Question</text>
+  <text x="935" y="328" text-anchor="middle" font-size="12.5" fill="#334155">(typed into the website)</text>
+  <line x1="935" y1="360" x2="935" y2="510" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="760" y="510" width="350" height="90" rx="10" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.5"/>
+  <text x="935" y="545" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Embeddings</text>
+  <text x="935" y="568" text-anchor="middle" font-size="12.5" fill="#4c1d95">(question → numbers, same method as above)</text>
+  <line x1="935" y1="600" x2="935" y2="630" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="760" y="630" width="350" height="90" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+  <text x="935" y="665" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Retriever</text>
+  <text x="935" y="688" text-anchor="middle" font-size="12.5" fill="#14532d">(finds the most similar chunks)</text>
+
+  <!-- Horizontal connector: Vector Store <-> Retriever -->
+  <text x="585" y="668" text-anchor="middle" font-size="12" font-style="italic" fill="#475569">searches ⇄ returns top matches</text>
+  <line x1="410" y1="675" x2="755" y2="675" stroke="#475569" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
+
+  <!-- Memory box (new today) -->
+  <rect x="300" y="740" width="330" height="90" rx="10" fill="#fef9c3" stroke="#a16207" stroke-width="1.5"/>
+  <text x="465" y="773" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Conversation Memory</text>
+  <text x="465" y="795" text-anchor="middle" font-size="12.5" fill="#713f12">(remembers earlier Q&amp;A this session — builds up automatically)</text>
+  <line x1="465" y1="830" x2="465" y2="890" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Retriever down to merge -->
+  <path d="M935,720 L935,855 L790,855 L790,890" fill="none" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Question bypass elbow to merge -->
+  <path d="M1110,315 L1130,315 L1130,905 L835,905" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+  <text x="1138" y="610" font-size="11" fill="#64748b" transform="rotate(90 1138,610)" text-anchor="middle">question text (unchanged)</text>
+
+  <!-- Phase 3 label -->
+  <text x="580" y="860" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">PHASE 3</text>
+  <text x="580" y="878" text-anchor="middle" font-size="12.5" fill="#475569">Generate the final answer (shown on your website)</text>
+
+  <!-- Merge box -->
+  <rect x="330" y="890" width="500" height="90" rx="10" fill="#f8fafc" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="580" y="925" text-anchor="middle" font-size="15.5" font-weight="bold" fill="#1e293b">Chunks + Your Question + Memory</text>
+  <text x="580" y="947" text-anchor="middle" font-size="12.5" fill="#334155">(all three get inserted into the prompt template)</text>
+  <line x1="580" y1="980" x2="580" y2="1010" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Prompt Template -->
+  <rect x="330" y="1010" width="500" height="80" rx="10" fill="#fce7f3" stroke="#be185d" stroke-width="1.5"/>
+  <text x="580" y="1043" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Prompt Template</text>
+  <text x="580" y="1065" text-anchor="middle" font-size="12.5" fill="#831843">(fills blanks: context = chunks, question = yours, memory = history)</text>
+  <line x1="580" y1="1090" x2="580" y2="1120" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Model -->
+  <rect x="330" y="1120" width="500" height="80" rx="10" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/>
+  <text x="580" y="1153" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Model (LLM)</text>
+  <text x="580" y="1175" text-anchor="middle" font-size="12.5" fill="#7f1d1d">(the AI reads everything and writes an answer)</text>
+  <line x1="580" y1="1200" x2="580" y2="1230" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Output Parser -->
+  <rect x="330" y="1230" width="500" height="80" rx="10" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+  <text x="580" y="1263" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Output Parser</text>
+  <text x="580" y="1285" text-anchor="middle" font-size="12.5" fill="#1e293b">(cleans the AI's raw reply into plain text)</text>
+  <line x1="580" y1="1310" x2="580" y2="1340" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- FastAPI Server (new today) -->
+  <rect x="330" y="1340" width="500" height="80" rx="10" fill="#cffafe" stroke="#0e7490" stroke-width="1.5"/>
+  <text x="580" y="1373" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">FastAPI Server — /ask endpoint</text>
+  <text x="580" y="1395" text-anchor="middle" font-size="12.5" fill="#164e63">(takes the question from the website, runs this chain, sends back JSON)</text>
+  <line x1="580" y1="1420" x2="580" y2="1450" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Website (new today, final output) -->
+  <rect x="330" y="1450" width="500" height="90" rx="10" fill="#bbf7d0" stroke="#15803d" stroke-width="2"/>
+  <text x="580" y="1483" text-anchor="middle" font-size="17" font-weight="bold" fill="#14532d">🌐 Website (animated UI)</text>
+  <text x="580" y="1505" text-anchor="middle" font-size="12.5" fill="#14532d">(shows the answer with a fade-in animation — 3D background keeps running)</text>
+
+  <!-- Footer -->
+  <text x="575" y="1565" text-anchor="middle" font-size="13" font-style="italic" fill="#475569">Today's new pieces: Memory, the FastAPI Server, and the Website. Everything above them (Document Loader → Output Parser) is exactly what you built last class.</text>
+</svg>
